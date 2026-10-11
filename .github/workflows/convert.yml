@@ -23,7 +23,7 @@ jobs:
 
       - name: Convert to MP4 with Perfect Encoding & Compression
         run: |
-          ffmpeg -i input.mkv -c:v libx264 -preset slow -crf 22 -pix_fmt yuv420p -c:a aac -b:a 128k -movflags +faststart output.mp4
+          ffmpeg -i input.mkv -c:v libx264 -preset slow -crf 22 -pix_fmt yuv420p -c:a aac -b:a 128k -movflags +faststart Episode.mp4
 
       - name: Upload MP4 Result
         uses: actions/upload-artifact@v4
