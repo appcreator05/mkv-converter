@@ -1,0 +1,32 @@
+name: Cloud MKV to MP4 Converter
+
+on:
+  workflow_dispatch:
+    inputs:
+      video_url:
+        description: 'আপনার MKV ভিডিওর ডিরেক্ট ডাউনলোড লিংক (যেমন: Google Drive, Telegram বা অন্য কোনো লিংক)'
+        required: true
+        type: string
+
+jobs:
+  convert:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install FFmpeg
+        run: sudo apt-get update && sudo apt-get install -y ffmpeg
+
+      - name: Download MKV Video
+        run: curl -L "${{ github.event.inputs.video_url }}" -o input.mkv
+
+      - name: Convert to MP4 (Super Fast)
+        run: ffmpeg -i input.mkv -c:v copy -c:a copy output.mp4
+
+      - name: Upload MP4 Result
+        uses: actions/upload-artifact@v4
+        with:
+          name: converted-mp4-video
+          path: output.mp4
+          retention-days: 1
