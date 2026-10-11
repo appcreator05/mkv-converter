@@ -29,5 +29,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: video-mp4
-          path: output.mp4
+          path: Episode.mp4
           retention-days: 1
