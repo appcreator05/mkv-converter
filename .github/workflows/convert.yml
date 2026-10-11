@@ -1,4 +1,4 @@
-name: Direct MP4 Converter
+name: Fast MKV to MP4 Converter
 
 on:
   workflow_dispatch:
@@ -21,15 +21,13 @@ jobs:
       - name: Download MKV Video
         run: curl -L "${{ github.event.inputs.video_url }}" -o input.mkv
 
-      - name: Convert to MP4 with Perfect Encoding & Thumbnail Support
+      - name: Convert to MP4 with Perfect Encoding
         run: |
           ffmpeg -i input.mkv -c:v libx264 -preset medium -crf 20 -pix_fmt yuv420p -c:a aac -b:a 192k -movflags +faststart output.mp4
 
-      - name: Upload to Transfer.sh
-        run: |
-          echo "Uploading MP4 file to direct download server..."
-          DOWNLOAD_LINK=$(curl --upload-file output.mp4 https://transfer.sh/output.mp4)
-          echo "===================================================="
-          echo "আপনার সরাসরি MP4 ডাউনলোডের লিংক নিচে দেওয়া হলো:"
-          echo "$DOWNLOAD_LINK"
-          echo "===================================================="
+      - name: Upload MP4 Result
+        uses: actions/upload-artifact@v4
+        with:
+          name: video-mp4
+          path: output.mp4
+          retention-days: 1
