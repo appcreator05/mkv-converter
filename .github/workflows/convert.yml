@@ -25,15 +25,11 @@ jobs:
         run: |
           ffmpeg -i input.mkv -c:v libx264 -preset medium -crf 20 -pix_fmt yuv420p -c:a aac -b:a 192k -movflags +faststart output.mp4
 
-      - name: Upload to Direct Download Server
+      - name: Upload to Transfer.sh
         run: |
-          echo "Uploading direct MP4 file..."
-          RESPONSE=$(curl -F "file=@output.mp4" https://file.io)
-          echo "DOWNLOAD_URL=$(echo $RESPONSE | grep -o '"link":"[^"]*"' | cut -d'"' -f4)" >> $GITHUB_ENV
-
-      - name: Show Download Link in Logs
-        run: |
+          echo "Uploading MP4 file to direct download server..."
+          DOWNLOAD_LINK=$(curl --upload-file output.mp4 https://transfer.sh/output.mp4)
           echo "===================================================="
           echo "আপনার সরাসরি MP4 ডাউনলোডের লিংক নিচে দেওয়া হলো:"
-          echo "${{ env.DOWNLOAD_URL }}"
+          echo "$DOWNLOAD_LINK"
           echo "===================================================="
