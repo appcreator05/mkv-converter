@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       video_url:
-        description: 'আপনার MKV ভিডিওর ডিরেক্ট ডাউনলোড লিংক'
+        description: 'Apnar MKV videor direct download link'
         required: true
         type: string
 
@@ -21,9 +21,9 @@ jobs:
       - name: Download MKV Video
         run: curl -L "${{ github.event.inputs.video_url }}" -o input.mkv
 
-      - name: Convert to MP4 with Perfect Encoding
+      - name: Convert to MP4 with Perfect Encoding & Compression
         run: |
-          ffmpeg -i input.mkv -c:v libx264 -preset medium -crf 20 -pix_fmt yuv420p -c:a aac -b:a 192k -movflags +faststart output.mp4
+          ffmpeg -i input.mkv -c:v libx264 -preset slow -crf 26 -pix_fmt yuv420p -c:a aac -b:a 128k -movflags +faststart output.mp4
 
       - name: Upload MP4 Result
         uses: actions/upload-artifact@v4
